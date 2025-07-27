@@ -1,0 +1,43 @@
+# Task ID: 8
+# Title: Implement `SectionsList` Resource and Error Handling
+# Status: pending
+# Dependencies: 3, 4
+# Priority: medium
+# Description: Expose a list of available sections as an MCP Resource and implement the fallback mechanism for handling requests for non-existent sections.
+# Details:
+Implement `server.registerResource` to expose a `sectionsList` that dynamically reads the `/sections` directory. Modify the core logic in tools to check if a section ID exists. If not, use a default (e.g., `hero-1`) and log an error.
+
+# Test Strategy:
+Query the `sectionsList` resource to confirm it returns an accurate list of available section IDs. Call `createLandingPage` with an invalid section ID and verify that the page is still created using a default section and an error is logged to the console.
+
+# Subtasks:
+## 1. Develop Directory Scanning Utility for Sections [pending]
+### Dependencies: None
+### Description: Create a reusable utility function that scans the `/sections` directory and returns a comprehensive list of all available section IDs based on the subdirectory names.
+### Details:
+Implement a function, e.g., `getAvailableSections()`, using the Node.js `fs` module. This function should read the contents of the `/sections` directory and return an array of strings, where each string is a valid section ID (e.g., 'hero-1', 'gallery-2'). It should handle cases where the directory might not exist or is empty.
+
+## 2. Register `sectionsList` as a Dynamic MCP Resource [pending]
+### Dependencies: 8.1
+### Description: Expose the list of available sections as a discoverable MCP resource named `sectionsList` on the server.
+### Details:
+In the server's main entry point or a dedicated resource management file, use the `server.registerResource` method. The resource handler should call the `getAvailableSections()` utility (from subtask 8.1) to dynamically provide the list of section IDs whenever the resource is queried.
+
+## 3. Implement Section Existence Validation Logic [pending]
+### Dependencies: 8.1
+### Description: Create a function to efficiently check if a given section ID is valid by cross-referencing it with the list of available sections.
+### Details:
+Implement a function, e.g., `isSectionValid(sectionId)`. This function should leverage the `getAvailableSections()` utility (from subtask 8.1) to get the current list of valid sections and return `true` or `false` based on whether the provided `sectionId` is in the list.
+
+## 4. Integrate Validation and Fallback into `createLandingPage` Tool [pending]
+### Dependencies: 8.3
+### Description: Modify the `createLandingPage` tool to use the validation logic and implement a fallback mechanism for any requested sections that do not exist.
+### Details:
+In the handler for the `createLandingPage` tool, before processing the array of section IDs, iterate through it. For each ID, call `isSectionValid()`. If it returns `false`, replace that ID in the array with a hardcoded default section ID, such as `hero-1`.
+
+## 5. Add Console Error Logging for Section Fallbacks [pending]
+### Dependencies: 8.4
+### Description: Enhance the `createLandingPage` tool to provide clear feedback by logging an error message when a section fallback occurs.
+### Details:
+Inside the `createLandingPage` tool's validation loop (from subtask 8.4), when an invalid section ID is detected, use `console.error` to log a descriptive message. The message should state which section ID was invalid and which default ID was used as a replacement.
+

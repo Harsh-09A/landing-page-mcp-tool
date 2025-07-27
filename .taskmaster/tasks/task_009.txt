@@ -1,0 +1,43 @@
+# Task ID: 9
+# Title: Define and Implement Zod Schemas for All Tools
+# Status: pending
+# Dependencies: 2
+# Priority: medium
+# Description: Define and integrate Zod schemas for the input and output of all MCP tools to ensure strict type safety and runtime validation.
+# Details:
+For each tool (`createLandingPage`, `replaceSection`, etc.), define `inputSchema` and `outputSchema` using `zod`. Integrate these schemas into the `server.registerTool` calls. Ensure handlers receive strongly-typed arguments.
+
+# Test Strategy:
+Attempt to call each tool with invalid input (e.g., wrong data type, missing properties). Verify that the MCP server rejects the request with a descriptive validation error from Zod.
+
+# Subtasks:
+## 1. Install Zod and Establish Schema Definition Patterns [pending]
+### Dependencies: None
+### Description: Add the `zod` library to the project's dependencies and create a centralized module for housing all tool-related schemas to ensure consistency and reusability.
+### Details:
+Execute `npm install zod` or the equivalent for the project's package manager. Create a new file, for example `src/lib/schemas.js`, to export all Zod schemas. This file will serve as the single source of truth for tool data structures.
+
+## 2. Define Input and Output Schemas for `createLandingPage` [pending]
+### Dependencies: 9.1
+### Description: Define the `inputSchema` and `outputSchema` for the `createLandingPage` tool using Zod, based on the requirements outlined in Task 4.
+### Details:
+In the central schema file, define an `inputSchema` for `createLandingPage` that validates `projectName` (string), `theme` (string), and `sectionIds` (array of strings). Define an `outputSchema` that validates a success object, e.g., `{ success: z.boolean(), projectPath: z.string() }`.
+
+## 3. Define Input and Output Schemas for Other Core Tools [pending]
+### Dependencies: 9.1
+### Description: Define the `inputSchema` and `outputSchema` for the `replaceSection` tool and any other currently defined or planned core tools.
+### Details:
+In the central schema file, define schemas for the `replaceSection` tool. The input should likely include `projectPath` (string), `oldSectionId` (string), and `newSectionId` (string). The output could be a simple success boolean. Add placeholder schemas for any other anticipated tools.
+
+## 4. Integrate Schema Validation into `McpServer.registerTool` [pending]
+### Dependencies: 9.2
+### Description: Modify the `McpServer`'s `registerTool` method to accept the Zod schemas and perform automatic validation of tool inputs before executing the handler.
+### Details:
+Update the `registerTool` method signature to accept an object containing the handler, `inputSchema`, and `outputSchema`. Within the server's internal tool invocation logic, wrap the handler call in a try/catch block. Use `inputSchema.parse(data)` to validate incoming arguments. If parsing fails, catch the Zod error and return a standardized validation error response to the client.
+
+## 5. Refactor Tool Handlers and Implement End-to-End Validation Tests [pending]
+### Dependencies: 9.2, 9.3, 9.4
+### Description: Refactor all existing tool handlers to utilize the strongly-typed arguments provided by the new validation layer and implement the test strategy for runtime validation.
+### Details:
+Update the `createLandingPage` and `replaceSection` tool handlers to remove any manual argument validation, as this is now handled by the server. The handler's arguments can be trusted to match the inferred Zod type. Implement the test strategy from the parent task by creating tests that call each tool with invalid inputs (missing properties, wrong types) and verify the server rejects the request with a descriptive Zod error.
+

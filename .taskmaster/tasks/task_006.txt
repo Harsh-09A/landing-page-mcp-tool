@@ -1,0 +1,43 @@
+# Task ID: 6
+# Title: Develop `replaceSection` MCP Tool
+# Status: pending
+# Dependencies: 4, 5
+# Priority: medium
+# Description: Implement the tool to replace an existing section in a landing page with a different design variation.
+# Details:
+Register a tool named `replaceSection`. It will take a project path and section IDs (e.g., replace `gallery-1` with `gallery-4`). The handler will use the marker-based injection logic to replace the corresponding blocks in `index.html`, `style.css`, and `script.js`.
+
+# Test Strategy:
+Create a landing page using the `createLandingPage` tool. Then, call `replaceSection` and verify that the content of the specified section is updated in all relevant files without affecting other sections.
+
+# Subtasks:
+## 1. Register `replaceSection` Tool and Define Handler [pending]
+### Dependencies: None
+### Description: Create the tool's file, register `replaceSection` in the MCP's tool registry, and define the handler function signature to accept project path, old section ID, and new section ID.
+### Details:
+Create a new file, e.g., `src/tools/replaceSection.js`. In the main MCP registry, map the command 'replaceSection' to the handler in this new file. The handler function should be defined as `async function replaceSectionHandler({ projectPath, oldSectionId, newSectionId })` and can start as a stub.
+
+## 2. Implement Logic to Fetch New Section Content [pending]
+### Dependencies: 6.1
+### Description: Within the handler, implement the logic to read the HTML, CSS, and JS content for the `newSectionId` from the central Sections Repository.
+### Details:
+Using the `newSectionId` (e.g., 'gallery-4'), construct the paths to the corresponding `.html`, `.css`, and `.js` files within the `/sections` directory. Read the contents of these files into variables. Implement error handling for cases where the section or its constituent files do not exist.
+
+## 3. Replace HTML Section Block [pending]
+### Dependencies: 6.2
+### Description: Use the marker-based replacement utility (from Task 5) to replace the HTML block for the `oldSectionId` with the new HTML content in the project's `index.html` file.
+### Details:
+Invoke the `replaceSection` utility function from the safe marker logic module. Pass it the path to the project's `index.html`, the `oldSectionId`, the `newSectionId`, and the new HTML content fetched in the previous subtask. The utility is expected to handle finding and replacing the content between `<!-- SECTION-START: oldSectionId -->` and `<!-- SECTION-END: oldSectionId -->` markers.
+
+## 4. Replace CSS and JS Section Blocks [pending]
+### Dependencies: 6.3
+### Description: Extend the replacement logic to also update the `style.css` and `script.js` files, replacing the old section's content with the new using the marker-based utility.
+### Details:
+Call the same `replaceSection` utility function for `style.css` and `script.js`. The utility must correctly handle CSS (`/* SECTION-START: id */`) and JS (`// SECTION-START: id`) comment markers. Pass the new CSS and JS content fetched in subtask 2 to update the respective files.
+
+## 5. Implement and Run End-to-End Test [pending]
+### Dependencies: 6.4
+### Description: Create a comprehensive test case that validates the entire `replaceSection` tool flow, from project creation to final verification, as outlined in the parent task's test strategy.
+### Details:
+The test will first use the `createLandingPage` tool to generate a project with a known section (e.g., `gallery-1`). Then, it will call the `replaceSection` tool to replace `gallery-1` with `gallery-4`. Finally, it will read the modified `index.html`, `style.css`, and `script.js` to assert that the replacement was successful and that no other sections were affected.
+

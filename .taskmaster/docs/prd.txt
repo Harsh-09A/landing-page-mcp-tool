@@ -1,0 +1,380 @@
+# Product Requirements Document (PRD)
+
+## Project Name
+
+Landing Page Automation System (via MCP Server + AI Agent)
+
+---
+
+## Overview
+
+A system to automate the repetitive process of creating landing pages.  
+Currently, landing pages share the same structure and differ only in **content, images, and color themes**.  
+Each landing page consists of fixed sections (e.g., Hero, Gallery, Amenities, etc.) with multiple design variations.
+
+**Definition:** The Landing Page Sections Repository is a centralized library of reusable section designs (HTML, CSS, JS) used to assemble landing pages.
+
+**Goal:**  
+Eliminate manual copy-pasting of HTML, CSS, and JS by using an MCP server that dynamically assembles pages from a centralized “Landing Page Sections Repository.”
+
+---
+
+## Current Manual Workflow
+
+1. Create a folder for the landing page.
+2. Copy a predefined folder structure (CSS, JS, images, etc.).
+3. Open VS Code and manually copy HTML, CSS, and JS for each section from a collection of design files.
+4. If a section doesn't look good, replace it manually.
+5. Make minor edits to color theme and CSS variables, basic CSS styles.
+6. Keep `mail.js` and `img` folders unchanged for every page.
+
+---
+
+## Standard Landing Page Structure
+
+**Folder Structure:**
+
+```
+<PROJECT-NAME>/
+│
+├── css/
+│   ├── common.css
+│   └── style.css
+├── fonts/
+│   ├── Trajan_Pro_Bold.ttf
+│   └── varsity_regular.ttf
+├── img/
+│   ├── amenities/
+│   ├── backgrounds/
+│   ├── banners/
+│   ├── extras/
+│   ├── gallery/
+│   ├── logo/
+│   ├── overview/
+│   ├── plans/
+│   └── qr/
+├── js/
+│   ├── mail.js
+│   └── script.js
+├── index.html
+├── privacy_policy.html
+├── termsandcondition.html
+└── thank_you.html
+```
+
+**Note:** `privacy_policy.html`, `termsandcondition.html`, and `thank_you.html` are static pages and are not AI-generated.
+
+### index.html structure
+
+**Sections in fixed order:**
+
+1. Slider / Hero Section
+2. About Property Section
+3. Gallery Section
+4. Configuration & Pricing Section
+5. Amenities Section
+6. Location Section
+7. Virtual Site Visit Section (optional)
+8. About Developer & Contact Form
+
+**Basic HTML format:**
+
+```html
+<body>
+  <!-- HEADER_SECTION -->
+  <main>
+    <!-- MAIN_CONTENT -->
+  </main>
+  <!-- FOOTER_SECTION -->
+  <!-- MOBILE_ACTION_FOOTER -->
+  <!-- MODAL_SECTION -->
+</body>
+```
+
+**Outside `<main>`:**
+
+- Footer
+- Mobile Action Buttons (visible only on mobile)
+- Modal
+
+### Proposed Automated Workflow
+
+**Sections Repository Structure**
+
+```
+/sections/
+│
+├── header/
+│   ├── header-1/
+│   │   ├── header-1.html
+│   │   ├── header-1.css
+│   │   └── header-1.js
+│   └── header-2/
+│       ├── header-2.html
+│       ├── header-2.css
+│       └── header-2.js
+│
+├── hero/
+│   ├── hero-1/
+│   │   ├── hero-1.html
+│   │   ├── hero-1.css
+│   │   └── hero-1.js
+│   └── hero-2/
+│       ├── hero-2.html
+│       ├── hero-2.css
+│       └── hero-2.js
+│
+├── overview/
+│   └── overview-1/
+│       ├── overview-1.html
+│       ├── overview-1.css
+│       └── overview-1.js
+│
+├── gallery/
+│   ├── gallery-1/
+│   │   ├── gallery-1.html
+│   │   ├── gallery-1.css
+│   │   └── gallery-1.js
+│   └── gallery-2/
+│       ├── gallery-2.html
+│       ├── gallery-2.css
+│       └── gallery-2.js
+│
+├── configuration/
+│   └── configuration-1/
+│       ├── configuration-1.html
+│       ├── configuration-1.css
+│       └── configuration-1.js
+│
+├── amenities/
+│   ├── amenities-1/
+│   │   ├── amenities-1.html
+│   │   ├── amenities-1.css
+│   │   └── amenities-1.js
+│   └── amenities-2/
+│       ├── amenities-2.html
+│       ├── amenities-2.css
+│       └── amenities-2.js
+│
+├── location/
+│   └── location-1/
+│       ├── location-1.html
+│       ├── location-1.css
+│       └── location-1.js
+│
+├── virtual-site-visit/
+│   └── vsv-1/
+│       ├── vsv-1.html
+│       ├── vsv-1.css
+│       └── vsv-1.js
+│
+├── about-developer/
+│   └── about-1/
+│       ├── about-1.html
+│       ├── about-1.css
+│       └── about-1.js
+│
+└── footer/
+    ├── footer-1/
+    │   ├── footer-1.html
+    │   ├── footer-1.css
+    │   └── footer-1.js
+    └── footer-2/
+        ├── footer-2.html
+        ├── footer-2.css
+        └── footer-2.js
+
+```
+
+Each design is identified by a Section ID:
+gallery-3, amenities-2, etc. Some designs can have only .html, or .html + .css, or .html + .css + .js files. Missing files should be safely ignored.
+
+## MCP Server Responsibilities
+
+- Serve the Landing Page Sections Repository.
+- Provide MCP Tools for:
+  - **Create New Landing Page**
+  - **Replace Section**
+  - **Apply Theme Colors**
+  - **Update CSS/JS**
+- Maintain safe code injection markers.
+
+```
+HTML
+
+<!-- SECTION-START: gallery-3 -->
+...
+<!-- SECTION-END: gallery-3 -->
+```
+
+```
+CSS
+
+/* SECTION-START: gallery-3 */
+...
+/* SECTION-END: gallery-3 */
+```
+
+```
+JS
+
+// SECTION-START: gallery-3
+...
+// SECTION-END: gallery-3
+
+```
+
+### Transport Support
+
+Support multiple MCP transports:
+
+- stdio transport for local CLI-based tools.
+- HTTP with Server-Sent Events (SSE) for remote or streaming integrations.
+
+### Tool Registration
+
+Define all MCP tools with:
+
+- Name: e.g., createLandingPage
+- Title & Description: human-readable metadata.
+- Schemas defined with Zod for strict runtime validation and type safety:
+
+```
+inputSchema: z.object({
+  theme: z.string(),
+  sections: z.array(z.string()),
+}),
+outputSchema: z.object({
+  success: z.boolean(),
+  message: z.string(),
+}),
+
+```
+
+- Async handler for each tool:
+
+```
+server.registerTool({
+  name: 'createLandingPage',
+  title: 'Create Landing Page',
+  description: 'Assemble a landing page with specified theme and sections',
+  inputSchema: {/* JSON schema */},
+  outputSchema: {/* JSON schema */}
+}, async (args) => { ... });
+```
+
+### Resources and Prompts
+
+- Expose a SectionsList Resource to let AI agents list available section IDs (gallery-1, amenities-2, etc.).
+- Optionally define Prompts for standardizing agent instructions during landing page creation.
+
+### Error Handling:
+
+If a requested section ID does not exist, the system should fall back to a default design and log an error for review.
+
+### Security:
+
+Only the intended project directories are write-enabled to avoid accidental overwrites or security risks.
+
+## AI Agent Responsibilities
+
+- Accept natural language commands like:
+
+  - “Create a new landing page: theme blue, gallery-3, amenities-1, configuration-2.”
+  - “Replace gallery with gallery-4.”
+  - “Make header background white and add shadow.”
+  - “Change section order: move amenities above pricing.”
+
+- Call MCP server to:
+  - Create a landing page folder structure.
+  - Assemble `index.html` with required sections.
+  - Update `/css/style.css` with theme variables.
+  - Update `/js/script.js` with UI-related JS (never touch `mail.js`).
+  - Copy `img` folder with default placeholders.
+
+### Commands should be idempotent:
+
+Repeating the same command should not create duplicate or conflicting changes.
+
+## Customization Commands
+
+- **Replace a section:**
+
+  - “Replace gallery with gallery-4.”
+
+- **Apply theme customization:**
+
+  - “Set theme to blue and update buttons to rounded style.”
+
+- **Structural update:**
+  - “Add virtual site visit section after amenities.”
+
+---
+
+## Key Rules
+
+- `mail.js` remains unchanged (only copied as-is).
+- `script.js` updated for UI interactions only.
+- `img/` folder copied from library as placeholders.
+- Folder structure remains fixed.
+- Safe marker-based injection ensures only the intended sections are modified.
+- Preserve semantic HTML structure `<header>, <main>, <footer>` in all generated pages.
+
+---
+
+## Benefits
+
+- Eliminates repetitive copy-paste operations.
+- Ensures consistent folder structure and code quality.
+- Rapid assembly and customization of landing pages.
+- Easy replacement of sections and themes via commands.
+
+---
+
+## Limitations
+
+- AI Agent can only assemble pages using existing designs.
+- Manual maintenance required for all design variations.
+- Theme or CSS customization limited to CSS variable replacements or basic CSS adjustments in values.
+
+---
+
+## Approach
+
+- Use a function-based coding approach for better readability and maintainability.
+- Add proper comments for developers to understand code.
+- Create different tools for different tasks.
+- Implement using @modelcontextprotocol/sdk (JavaScript).
+- Use Zod for defining and validating tool input/output schemas to ensure robust type safety and error handling.
+- Dependencies: `@modelcontextprotocol/sdk`, `zod` for schema validation.
+- Server should export a `main.js` entry file that registers all tools, sets up transports, and starts the MCP server.
+- `main.js` should:
+
+  1. Instantiate the MCP server:
+
+  ```
+  const server = new McpServer({ name: "landing-page-server", version: "1.0.0" });
+  ```
+
+  2. Register all tools with `server.registerTool(...)`.
+
+  3. Connect transports:
+
+  ```
+  await server.connect(new StdioServerTransport());
+  ```
+
+## Future Enhancements
+
+**Note :- Not Required now**
+
+- GUI-based section picker (drag and drop).
+- Live preview before final assembly.
+- Automated image replacement with project-specific assets.
+
+## References
+
+- [MCP Quickstart (Server)](https://modelcontextprotocol.io/quickstart/server#node)
+- [MCP Quickstart (Client)](https://modelcontextprotocol.io/quickstart/client)
+- [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+- [Example MCP Servers](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)

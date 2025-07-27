@@ -1,0 +1,43 @@
+# Task ID: 5
+# Title: Implement Safe Marker-Based Code Injection Logic
+# Status: pending
+# Dependencies: 2
+# Priority: high
+# Description: Develop robust, reusable functions for reading, replacing, and injecting code into files using the specified `<!-- SECTION-START: id -->` comment markers.
+# Details:
+Create a utility module with functions like `injectSection(filePath, sectionId, content)` and `replaceSection(filePath, oldSectionId, newSectionId, newContent)`. This logic must handle HTML, CSS, and JS comment styles and be idempotent.
+
+# Test Strategy:
+Write unit tests for the utility functions. Test edge cases like missing files, missing markers, and repeated operations to ensure idempotency.
+
+# Subtasks:
+## 1. Create Core Marker-Finding and File I/O Utilities [pending]
+### Dependencies: None
+### Description: Establish the foundational utilities for the code injection module. This includes creating functions for safely reading/writing file content and a core function to find the start and end character positions of a marked section within a string.
+### Details:
+Create a new module (e.g., `code-injector.js`). Implement a private function like `_findSectionRange(content, startMarker, endMarker)` that returns the start and end indices of the content between the markers. Implement robust `readFile` and `writeFile` helpers that handle basic file system errors.
+
+## 2. Abstract Comment Syntax Generation [pending]
+### Dependencies: 5.1
+### Description: Develop a helper function that generates the correct start and end marker syntax for different file types (HTML, CSS, JS) based on the file's extension.
+### Details:
+Implement a function, e.g., `_getMarkers(filePath, sectionId)`, that inspects the file extension. For `.html`, it should return `<!-- SECTION-START: id -->` and `<!-- SECTION-END: id -->`. For `.css` or `.js`, it should return `/* SECTION-START: id */` and `/* SECTION-END: id */`. This will make the main functions file-type agnostic.
+
+## 3. Implement Idempotent `injectSection` Function [pending]
+### Dependencies: 5.1, 5.2
+### Description: Develop the `injectSection` function to insert or replace content within a predefined section block, ensuring the operation is idempotent.
+### Details:
+Implement the public function `injectSection(filePath, sectionId, content)`. It will use the helpers from subtasks 5.1 and 5.2 to read the file, generate the correct markers, and find the section. It will then replace the content *between* the start and end markers with the new content. This replacement approach ensures idempotency.
+
+## 4. Implement `replaceSection` Function [pending]
+### Dependencies: 5.1, 5.2
+### Description: Develop the `replaceSection` function to replace an entire section block, including its markers and content, with a new section block.
+### Details:
+Implement `replaceSection(filePath, oldSectionId, newSectionId, newContent)`. This function will find the entire block for `oldSectionId` (from the start of the start marker to the end of the end marker) and replace it with a completely new block generated using `newSectionId` and `newContent`.
+
+## 5. Implement Content Extraction and Finalize Error Handling [pending]
+### Dependencies: 5.3, 5.4
+### Description: Create a function to read content from a section and harden all public functions by adding comprehensive error handling for edge cases.
+### Details:
+Implement a `getSectionContent(filePath, sectionId)` function. Refactor all public functions (`injectSection`, `replaceSection`, `getSectionContent`) to handle errors robustly. Specifically, throw descriptive errors if the file does not exist or if the specified section markers are not found in the file.
+

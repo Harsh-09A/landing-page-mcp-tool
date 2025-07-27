@@ -1,0 +1,43 @@
+# Task ID: 4
+# Title: Develop `createLandingPage` MCP Tool
+# Status: pending
+# Dependencies: 2, 3
+# Priority: high
+# Description: Implement the primary tool for assembling a new landing page from scratch. This tool will create the project directory, copy static assets, and build the initial `index.html`, `style.css`, and `script.js`.
+# Details:
+Register a tool named `createLandingPage`. The handler will accept a project name, theme, and an array of section IDs. It will read files from the Sections Repository, inject them into template files using markers, and create the full landing page folder structure.
+
+# Test Strategy:
+Call the tool with a set of section IDs. Verify that a new project folder is created with the correct structure, including `index.html`, static files, and compiled `style.css` and `script.js` containing the content from the requested sections.
+
+# Subtasks:
+## 1. Register `createLandingPage` Tool and Define Handler Signature [pending]
+### Dependencies: None
+### Description: Create the tool's file and register it with the MCP server. Define the handler function that accepts `projectName`, `theme`, and `sectionIds` as arguments, and perform initial argument validation.
+### Details:
+In the MCP tool registration file, add a new entry for `createLandingPage`. Implement the basic handler function structure, including validation to ensure required arguments like `projectName` and `sectionIds` are provided.
+
+## 2. Implement Project Directory and Asset Scaffolding [pending]
+### Dependencies: 4.1
+### Description: Create the logic within the tool handler to generate the new project's directory structure based on the `projectName`. This includes creating subfolders and copying base template files and static assets.
+### Details:
+Using the Node.js `fs` module, create a root folder named after the `projectName`. Inside, create `css/`, `js/`, and `assets/` subdirectories. Copy the base `template.html` to `index.html`, `template.css` to `css/style.css`, `template.js` to `js/script.js`, and copy all shared static assets into the `assets/` folder.
+
+## 3. Aggregate Section Content from Sections Repository [pending]
+### Dependencies: 4.1
+### Description: Implement the logic to iterate through the input `sectionIds` array. For each ID, read the corresponding HTML, CSS, and JS content from the Sections Repository and aggregate them by type.
+### Details:
+Create a function that takes the `sectionIds` array. For each ID, it will construct the paths to the section's `index.html`, `style.css`, and `script.js` files within the Sections Repository. It will read the content of these files and store them in three separate arrays or strings for later injection.
+
+## 4. Inject Aggregated Content into Template Files [pending]
+### Dependencies: 4.2, 4.3
+### Description: Using the marker-based injection utility (from Task 5), insert the aggregated HTML, CSS, and JS content from the previous subtask into the newly created `index.html`, `css/style.css`, and `js/script.js` files.
+### Details:
+This subtask integrates the functionality from Task 5. It will call the injection utility, passing the path to the target file (e.g., `projectName/index.html`), the section ID for marker generation, and the content to be injected. This process will be repeated for HTML, CSS, and JS content into their respective target files.
+
+## 5. Apply Initial Theme to Generated Files [pending]
+### Dependencies: 4.4
+### Description: Implement the logic to apply the initial theme specified in the `theme` argument. This involves modifying the generated files, for instance, by injecting theme-specific CSS variables into the stylesheet.
+### Details:
+Based on the `theme` argument (e.g., a theme name or an object of properties), retrieve the corresponding theme data (e.g., CSS variables for colors and fonts). Use a file modification utility to replace placeholder values in `css/style.css` with the theme-specific values. For example, replace `/* --THEME-VARIABLES-- */` with the actual CSS variable definitions.
+

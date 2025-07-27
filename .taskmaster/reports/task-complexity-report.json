@@ -1,0 +1,93 @@
+{
+	"meta": {
+		"generatedAt": "2025-07-27T12:36:13.085Z",
+		"tasksAnalyzed": 10,
+		"totalTasks": 10,
+		"analysisCount": 10,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Project Setup and Dependency Installation",
+			"complexityScore": 1,
+			"recommendedSubtasks": 0,
+			"expansionPrompt": "This task is atomic and does not require further expansion.",
+			"reasoning": "This task consists of executing a few basic command-line instructions and creating an empty file structure. It's a foundational step with no logical complexity and should be completed as a single action."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "Implement MCP Server Foundation",
+			"complexityScore": 2,
+			"recommendedSubtasks": 2,
+			"expansionPrompt": "Expand this task into two subtasks: 1. Create the `main.js` file, import `McpServer`, and instantiate it with the specified name. 2. Import `StdioServerTransport`, instantiate it, and implement the async main function to connect the transport to the server instance.",
+			"reasoning": "This involves writing basic boilerplate code using an SDK. The complexity is slightly above setup because it requires understanding the SDK's core classes, but the logic is minimal and linear. It can be split into server instantiation and transport connection."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Create and Populate Landing Page Sections Repository",
+			"complexityScore": 3,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Expand this task into subtasks based on section type. For example: 1. Create the base `/sections` directory and subdirectories for `header` and `hero`. 2. Populate the `header` and `hero` directories with their respective design variations (HTML, CSS, JS files). 3. Create and populate the remaining section directories like `gallery` and `footer` as specified in the PRD.",
+			"reasoning": "While there's no complex code, the task involves creating a significant number of files and directories with specific content. It's repetitive but requires attention to detail. Breaking it down by section type makes the work more manageable and parallelizable."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "Develop `createLandingPage` MCP Tool",
+			"complexityScore": 7,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Expand this task into four subtasks: 1. Register the `createLandingPage` tool with the MCP server, defining its name and a placeholder handler. 2. Implement the handler logic to parse input arguments (project name, theme, section IDs) and create the target project directory structure. 3. Implement the logic to iterate through section IDs, read the corresponding HTML, CSS, and JS content from the `/sections` repository. 4. Implement the final assembly logic to inject the collected content into the main `index.html`, `style.css`, and `script.js` files using the marker-based system.",
+			"reasoning": "This is a complex task involving multiple file system operations (read/write), data aggregation from various sources, and integration with the MCP server. The logic for correctly assembling multiple section files into final output files is non-trivial and error-prone."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Implement Safe Marker-Based Code Injection Logic",
+			"complexityScore": 6,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Expand this task into three subtasks: 1. Create a `utils/fileInjector.js` module and implement a function to inject a block of content into a file at a specific marker. 2. Implement a `replaceSection` function within the same module that finds existing content between start/end markers and replaces it. 3. Write a suite of unit tests for the file injector utility, covering successful cases, edge cases like missing files or markers, and ensuring idempotency for both injection and replacement.",
+			"reasoning": "This task requires careful design to create a robust and reusable utility. The logic for finding and replacing content based on markers across different file types (HTML, CSS, JS comments) can be tricky. Ensuring idempotency and handling edge cases requires dedicated effort and testing."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Develop `replaceSection` MCP Tool",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Expand this task into three subtasks: 1. Register the `replaceSection` tool with the MCP server and define its handler. 2. In the handler, implement logic to parse inputs (project path, old/new section IDs) and read the content of the new section from the repository. 3. Implement the core logic to call the marker-based replacement utility from Task 5 for each relevant file (`index.html`, `style.css`, `script.js`), passing the correct content.",
+			"reasoning": "This task's complexity is moderate. While it relies on the utility from Task 5, it still requires its own logic for handling tool inputs, locating the correct project files, and orchestrating the replacement across multiple files, making it a significant integration piece."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Develop `applyTheme` MCP Tool",
+			"complexityScore": 4,
+			"recommendedSubtasks": 2,
+			"expansionPrompt": "Expand this task into two subtasks: 1. Register the `applyTheme` tool with the MCP server, defining its handler and input parameters (e.g., primaryColor, fontFamily). 2. Implement the handler logic to read the project's `style.css` file, use regular expressions to find and replace the values of predefined CSS variables, and write the updated content back to the file.",
+			"reasoning": "This task involves file I/O and string manipulation. The logic is more constrained than section injection, as it focuses on finding and replacing specific, well-formatted lines (CSS variables). This makes it less complex but still requires careful implementation and testing."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Implement `SectionsList` Resource and Error Handling",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Expand this task into three subtasks: 1. Create a utility function that recursively scans the `/sections` directory and returns a structured list of available section IDs. 2. Register a new MCP Resource named `sectionsList` that uses this utility function as its handler. 3. Refactor the `createLandingPage` and `replaceSection` tool handlers to first validate incoming section IDs against the available list, implementing the specified fallback logic and error logging for invalid IDs.",
+			"reasoning": "This task has two distinct parts. Implementing the resource requires dynamic file system scanning. The second part involves refactoring existing tools to incorporate validation and new fallback logic, which increases complexity beyond that of a simple new feature."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Define and Implement Zod Schemas for All Tools",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Expand this task by grouping tools: 1. Define and integrate Zod input/output schemas for the `createLandingPage` tool. 2. Define and integrate Zod input/output schemas for the `replaceSection` tool. 3. Define and integrate Zod input/output schemas for the `applyTheme` tool and the `sectionsList` resource.",
+			"reasoning": "While defining a single Zod schema is simple, this task requires creating and integrating schemas for every tool in the system. It's a cross-cutting refactoring task that touches multiple files and requires careful attention to detail to ensure all inputs/outputs are correctly typed and validated."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "End-to-End Testing with a Mock Client",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Expand this task into four sequential subtasks: 1. Create a new Node.js script (`test-client.js`), import the MCP client SDK, and implement the logic to connect to the running server. 2. Implement the client-side call to the `createLandingPage` tool and add assertions to verify the initial project creation. 3. Add sequential calls to the `replaceSection` and `applyTheme` tools, passing valid arguments. 4. Implement final file system checks, reading the generated `index.html` and `style.css` to assert that all operations were applied correctly.",
+			"reasoning": "This is a comprehensive integration test. It requires writing a separate Node.js client, understanding the client-side SDK, sequencing multiple asynchronous tool calls, and performing complex assertions against the file system. It validates the entire system working in concert."
+		}
+	]
+}

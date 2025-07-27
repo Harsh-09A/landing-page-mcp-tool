@@ -1,0 +1,687 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Project Setup and Dependency Installation",
+        "description": "Initialize the Node.js project, create the standard folder structure for the MCP server, and install the required npm packages: `@modelcontextprotocol/sdk` and `zod`.",
+        "details": "Create a `package.json` file, run `npm install @modelcontextprotocol/sdk zod`. Set up the initial `main.js` entry file and the `/sections` directory.",
+        "testStrategy": "Verify that `npm install` completes without errors and that the `node_modules` folder and `package-lock.json` are created. Check that the initial project structure matches the PRD.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Node.js Project",
+            "description": "Create the `package.json` file to define the project, its metadata, and manage its dependencies.",
+            "dependencies": [],
+            "details": "Run the command `npm init -y` in the root directory of the project to generate a default `package.json` file.",
+            "status": "pending",
+            "testStrategy": "Verify that a `package.json` file is successfully created in the project's root directory."
+          },
+          {
+            "id": 2,
+            "title": "Install Required NPM Packages",
+            "description": "Install the core dependencies required for the MCP server: the SDK and the Zod validation library.",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Execute the command `npm install @modelcontextprotocol/sdk zod` in the terminal from the project root.",
+            "status": "pending",
+            "testStrategy": "Confirm that the command completes without errors. Check for the creation of the `node_modules` folder and `package-lock.json` file. Verify that `@modelcontextprotocol/sdk` and `zod` are listed under `dependencies` in `package.json`."
+          },
+          {
+            "id": 3,
+            "title": "Create Initial Directory Structure",
+            "description": "Establish the basic folder structure for the project, specifically the directory intended to hold the reusable page sections.",
+            "dependencies": [],
+            "details": "Create a new directory named `sections` in the root of the project. This folder will house the component libraries.",
+            "status": "pending",
+            "testStrategy": "Check that a folder named `sections` exists at the top level of the project directory."
+          },
+          {
+            "id": 4,
+            "title": "Create Application Entry File",
+            "description": "Set up the initial JavaScript file that will serve as the main entry point for the Node.js application.",
+            "dependencies": [],
+            "details": "Create a new, empty file named `main.js` in the project's root directory.",
+            "status": "pending",
+            "testStrategy": "Verify that the file `main.js` exists in the project's root directory."
+          },
+          {
+            "id": 5,
+            "title": "Configure `package.json` Start Script",
+            "description": "Add a convenient `start` script to the `package.json` file to make running the server straightforward.",
+            "dependencies": [
+              "1.1",
+              "1.4"
+            ],
+            "details": "Modify the `scripts` object within the `package.json` file to add a `start` key with the value `\"node main.js\"`.",
+            "status": "pending",
+            "testStrategy": "Run `npm start` from the command line. The command should execute without a 'script not found' error and attempt to run the `main.js` file."
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement MCP Server Foundation",
+        "description": "Create the `main.js` entry file to instantiate and configure the core MCP server. This includes setting up the server instance and connecting the required transports.",
+        "details": "In `main.js`, import `McpServer` and `StdioServerTransport`. Instantiate the server with the name 'landing-page-server'. Implement the async main function to connect the stdio transport as per the PRD.",
+        "testStrategy": "Run `node main.js`. The server should start without errors and listen for commands via stdio. No tools will be available yet.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create `main.js` Entry File",
+            "description": "Create the primary entry file `main.js` for the MCP server application in the project's root directory.",
+            "dependencies": [],
+            "details": "The file should be created in the project's root directory. It will serve as the starting point for the server's execution and will contain all subsequent logic for this task.",
+            "status": "pending",
+            "testStrategy": "Verify that the `main.js` file exists in the project's root directory."
+          },
+          {
+            "id": 2,
+            "title": "Import Core MCP Modules",
+            "description": "Add the necessary import statements for `McpServer` and `StdioServerTransport` at the top of `main.js`.",
+            "dependencies": [
+              "2.1"
+            ],
+            "details": "Use ES module `import` syntax to bring the `McpServer` and `StdioServerTransport` classes into the `main.js` scope from their respective library paths.",
+            "status": "pending",
+            "testStrategy": "Lint the `main.js` file to ensure the imports are syntactically correct and resolve to the correct modules. The script should run via Node.js without 'module not found' errors."
+          },
+          {
+            "id": 3,
+            "title": "Instantiate McpServer",
+            "description": "Create an instance of the `McpServer` class with the specified server name 'landing-page-server'.",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "In `main.js`, after the import statements, instantiate `McpServer` by calling its constructor with the name 'landing-page-server'. Assign the resulting object to a constant named `server`.",
+            "status": "pending",
+            "testStrategy": "Run `node main.js`. The script should execute without errors related to the `McpServer` instantiation."
+          },
+          {
+            "id": 4,
+            "title": "Implement Async Main Execution Function",
+            "description": "Define and call an asynchronous `main` function to encapsulate the server's startup logic.",
+            "dependencies": [
+              "2.3"
+            ],
+            "details": "Create an `async function main() { ... }`. This function will contain the logic for connecting transports. Add a call to `main()` at the end of the script to ensure it runs when the file is executed.",
+            "status": "pending",
+            "testStrategy": "Add a `console.log('Server starting...')` statement inside the `main` function. Run `node main.js` and verify the message is printed to the console."
+          },
+          {
+            "id": 5,
+            "title": "Connect StdioServerTransport",
+            "description": "Instantiate and connect the `StdioServerTransport` to the MCP server instance within the main function.",
+            "dependencies": [
+              "2.4"
+            ],
+            "details": "Inside the `main` function, create a new instance of `StdioServerTransport`. Then, call the `await server.connect()` method, passing the transport instance to it. This enables the server to listen for commands via standard I/O.",
+            "status": "pending",
+            "testStrategy": "Run `node main.js`. The process should start and remain running without exiting or throwing errors, indicating it is successfully listening for input via stdio."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Create and Populate Landing Page Sections Repository",
+        "description": "Establish the centralized library of reusable section designs by creating the folder structure and populating it with sample HTML, CSS, and JS files for various landing page sections.",
+        "details": "Create subdirectories inside `/sections` for `header`, `hero`, `gallery`, etc. Within each, create at least two design variations (e.g., `hero-1`, `hero-2`) containing `.html`, `.css`, and `.js` files as specified in the PRD.",
+        "testStrategy": "Manually inspect the `/sections` directory to ensure it matches the structure defined in the PRD. Validate that the sample HTML/CSS/JS files are well-formed.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Section Category Directories",
+            "description": "Establish the top-level folder structure for different types of landing page sections within the main `/sections` directory as outlined in the PRD.",
+            "dependencies": [],
+            "details": "Inside the `/sections` directory, create the following subdirectories: `header`, `hero`, `gallery`, `features`, and `footer`. This structure will house the different design variations for each section type.",
+            "status": "pending",
+            "testStrategy": "Manually inspect the `/sections` directory to confirm the existence of the `header`, `hero`, `gallery`, `features`, and `footer` subdirectories."
+          },
+          {
+            "id": 2,
+            "title": "Populate Header Section Variations",
+            "description": "Create two distinct design variations for the `header` section, including their HTML structure, CSS styling, and any associated JavaScript.",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "Inside `/sections/header`, create two subdirectories: `header-1` and `header-2`. In each, create `index.html`, `style.css`, and `script.js`. The HTML should contain a logo placeholder and basic navigation links. The CSS should provide distinct styling for each variation (e.g., `header-1` with a solid background, `header-2` transparent and sticky).",
+            "status": "pending",
+            "testStrategy": "Verify the existence and structure of `/sections/header/header-1` and `/sections/header/header-2`. Manually inspect the files to ensure they contain well-formed, non-empty HTML, CSS, and JS."
+          },
+          {
+            "id": 3,
+            "title": "Populate Hero Section Variations",
+            "description": "Create two distinct design variations for the `hero` section, providing sample content for a compelling page introduction.",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "Inside `/sections/hero`, create two subdirectories: `hero-1` and `hero-2`. In each, create `index.html`, `style.css`, and `script.js`. The HTML should include a main headline, a subheadline, and a call-to-action button. The CSS should provide distinct layouts (e.g., `hero-1` with a background image, `hero-2` with a two-column layout).",
+            "status": "pending",
+            "testStrategy": "Verify the existence and structure of `/sections/hero/hero-1` and `/sections/hero/hero-2`. Manually inspect the files to ensure they contain well-formed code and sample hero content."
+          },
+          {
+            "id": 4,
+            "title": "Populate Gallery Section Variations",
+            "description": "Create two distinct design variations for a `gallery` section to showcase images or projects.",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "Inside `/sections/gallery`, create two subdirectories: `gallery-1` and `gallery-2`. In each, create `index.html`, `style.css`, and `script.js`. The HTML should contain a grid of placeholder images. The CSS should style the grid differently for each variation (e.g., a standard 3-column grid vs. a masonry layout).",
+            "status": "pending",
+            "testStrategy": "Verify the existence and structure of `/sections/gallery/gallery-1` and `/sections/gallery/gallery-2`. Manually inspect the files to ensure they contain well-formed code for an image gallery."
+          },
+          {
+            "id": 5,
+            "title": "Populate Features Section Variations",
+            "description": "Create two distinct design variations for a `features` section, designed to highlight key product benefits or services.",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "Inside `/sections/features`, create two subdirectories: `features-1` and `features-2`. In each, create `index.html`, `style.css`, and `script.js`. The HTML should contain a set of feature blocks, each with an icon placeholder, a title, and a description. The CSS should provide different layouts (e.g., a 3-column layout vs. alternating left/right image-text blocks).",
+            "status": "pending",
+            "testStrategy": "Verify the existence and structure of `/sections/features/features-1` and `/sections/features/features-2`. Manually inspect the files to ensure they contain well-formed code for a features list."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Develop `createLandingPage` MCP Tool",
+        "description": "Implement the primary tool for assembling a new landing page from scratch. This tool will create the project directory, copy static assets, and build the initial `index.html`, `style.css`, and `script.js`.",
+        "details": "Register a tool named `createLandingPage`. The handler will accept a project name, theme, and an array of section IDs. It will read files from the Sections Repository, inject them into template files using markers, and create the full landing page folder structure.",
+        "testStrategy": "Call the tool with a set of section IDs. Verify that a new project folder is created with the correct structure, including `index.html`, static files, and compiled `style.css` and `script.js` containing the content from the requested sections.",
+        "priority": "high",
+        "dependencies": [
+          2,
+          3
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Register `createLandingPage` Tool and Define Handler Signature",
+            "description": "Create the tool's file and register it with the MCP server. Define the handler function that accepts `projectName`, `theme`, and `sectionIds` as arguments, and perform initial argument validation.",
+            "dependencies": [],
+            "details": "In the MCP tool registration file, add a new entry for `createLandingPage`. Implement the basic handler function structure, including validation to ensure required arguments like `projectName` and `sectionIds` are provided.",
+            "status": "pending",
+            "testStrategy": "After implementation, query the MCP server for its list of available tools. Verify that `createLandingPage` is present in the list and that calling it with missing arguments returns an appropriate error."
+          },
+          {
+            "id": 2,
+            "title": "Implement Project Directory and Asset Scaffolding",
+            "description": "Create the logic within the tool handler to generate the new project's directory structure based on the `projectName`. This includes creating subfolders and copying base template files and static assets.",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "Using the Node.js `fs` module, create a root folder named after the `projectName`. Inside, create `css/`, `js/`, and `assets/` subdirectories. Copy the base `template.html` to `index.html`, `template.css` to `css/style.css`, `template.js` to `js/script.js`, and copy all shared static assets into the `assets/` folder.",
+            "status": "pending",
+            "testStrategy": "Call the tool with a project name. Verify that the expected folder and subfolder structure is created on the filesystem and that all template and static asset files are present and identical to their source files."
+          },
+          {
+            "id": 3,
+            "title": "Aggregate Section Content from Sections Repository",
+            "description": "Implement the logic to iterate through the input `sectionIds` array. For each ID, read the corresponding HTML, CSS, and JS content from the Sections Repository and aggregate them by type.",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "Create a function that takes the `sectionIds` array. For each ID, it will construct the paths to the section's `index.html`, `style.css`, and `script.js` files within the Sections Repository. It will read the content of these files and store them in three separate arrays or strings for later injection.",
+            "status": "pending",
+            "testStrategy": "Write a unit test for the aggregation logic. Provide a mock array of section IDs and a mock repository file structure. Assert that the function correctly reads and concatenates the content for HTML, CSS, and JS from the specified section files."
+          },
+          {
+            "id": 4,
+            "title": "Inject Aggregated Content into Template Files",
+            "description": "Using the marker-based injection utility (from Task 5), insert the aggregated HTML, CSS, and JS content from the previous subtask into the newly created `index.html`, `css/style.css`, and `js/script.js` files.",
+            "dependencies": [
+              "4.2",
+              "4.3"
+            ],
+            "details": "This subtask integrates the functionality from Task 5. It will call the injection utility, passing the path to the target file (e.g., `projectName/index.html`), the section ID for marker generation, and the content to be injected. This process will be repeated for HTML, CSS, and JS content into their respective target files.",
+            "status": "pending",
+            "testStrategy": "After creating a scaffolded project (Subtask 4.2), run the injection logic with pre-defined section content. Inspect the resulting `index.html`, `style.css`, and `script.js` to confirm that the content has been correctly inserted within the appropriate `<!-- SECTION-START: id -->` and `<!-- SECTION-END: id -->` markers."
+          },
+          {
+            "id": 5,
+            "title": "Apply Initial Theme to Generated Files",
+            "description": "Implement the logic to apply the initial theme specified in the `theme` argument. This involves modifying the generated files, for instance, by injecting theme-specific CSS variables into the stylesheet.",
+            "dependencies": [
+              "4.4"
+            ],
+            "details": "Based on the `theme` argument (e.g., a theme name or an object of properties), retrieve the corresponding theme data (e.g., CSS variables for colors and fonts). Use a file modification utility to replace placeholder values in `css/style.css` with the theme-specific values. For example, replace `/* --THEME-VARIABLES-- */` with the actual CSS variable definitions.",
+            "status": "pending",
+            "testStrategy": "Call the `createLandingPage` tool with a specific theme. Inspect the generated `css/style.css` file to verify that the CSS variables (e.g., `--primary-color`) have been set to the values corresponding to the requested theme."
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Implement Safe Marker-Based Code Injection Logic",
+        "description": "Develop robust, reusable functions for reading, replacing, and injecting code into files using the specified `<!-- SECTION-START: id -->` comment markers.",
+        "details": "Create a utility module with functions like `injectSection(filePath, sectionId, content)` and `replaceSection(filePath, oldSectionId, newSectionId, newContent)`. This logic must handle HTML, CSS, and JS comment styles and be idempotent.",
+        "testStrategy": "Write unit tests for the utility functions. Test edge cases like missing files, missing markers, and repeated operations to ensure idempotency.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Core Marker-Finding and File I/O Utilities",
+            "description": "Establish the foundational utilities for the code injection module. This includes creating functions for safely reading/writing file content and a core function to find the start and end character positions of a marked section within a string.",
+            "dependencies": [],
+            "details": "Create a new module (e.g., `code-injector.js`). Implement a private function like `_findSectionRange(content, startMarker, endMarker)` that returns the start and end indices of the content between the markers. Implement robust `readFile` and `writeFile` helpers that handle basic file system errors.",
+            "status": "pending",
+            "testStrategy": "Unit test the `_findSectionRange` function with various string inputs to ensure it correctly identifies ranges. Test file I/O helpers to confirm they read content correctly and handle non-existent files gracefully."
+          },
+          {
+            "id": 2,
+            "title": "Abstract Comment Syntax Generation",
+            "description": "Develop a helper function that generates the correct start and end marker syntax for different file types (HTML, CSS, JS) based on the file's extension.",
+            "dependencies": [
+              "5.1"
+            ],
+            "details": "Implement a function, e.g., `_getMarkers(filePath, sectionId)`, that inspects the file extension. For `.html`, it should return `<!-- SECTION-START: id -->` and `<!-- SECTION-END: id -->`. For `.css` or `.js`, it should return `/* SECTION-START: id */` and `/* SECTION-END: id */`. This will make the main functions file-type agnostic.",
+            "status": "pending",
+            "testStrategy": "Test the helper by providing different file paths (`index.html`, `style.css`, `script.js`) and section IDs, and assert that the correct marker strings are generated for each case."
+          },
+          {
+            "id": 3,
+            "title": "Implement Idempotent `injectSection` Function",
+            "description": "Develop the `injectSection` function to insert or replace content within a predefined section block, ensuring the operation is idempotent.",
+            "dependencies": [
+              "5.1",
+              "5.2"
+            ],
+            "details": "Implement the public function `injectSection(filePath, sectionId, content)`. It will use the helpers from subtasks 5.1 and 5.2 to read the file, generate the correct markers, and find the section. It will then replace the content *between* the start and end markers with the new content. This replacement approach ensures idempotency.",
+            "status": "pending",
+            "testStrategy": "Test by injecting content into an empty section. Re-run the same injection to verify the file remains unchanged. Then, run with new content to verify the section is updated. Test on HTML, CSS, and JS files."
+          },
+          {
+            "id": 4,
+            "title": "Implement `replaceSection` Function",
+            "description": "Develop the `replaceSection` function to replace an entire section block, including its markers and content, with a new section block.",
+            "dependencies": [
+              "5.1",
+              "5.2"
+            ],
+            "details": "Implement `replaceSection(filePath, oldSectionId, newSectionId, newContent)`. This function will find the entire block for `oldSectionId` (from the start of the start marker to the end of the end marker) and replace it with a completely new block generated using `newSectionId` and `newContent`.",
+            "status": "pending",
+            "testStrategy": "Create a file with a section (e.g., `id=\"A\"`). Call `replaceSection` to change it to `id=\"B\"` with new content. Verify the file content, ensuring the old markers are gone and the new ones are present with the new content."
+          },
+          {
+            "id": 5,
+            "title": "Implement Content Extraction and Finalize Error Handling",
+            "description": "Create a function to read content from a section and harden all public functions by adding comprehensive error handling for edge cases.",
+            "dependencies": [
+              "5.3",
+              "5.4"
+            ],
+            "details": "Implement a `getSectionContent(filePath, sectionId)` function. Refactor all public functions (`injectSection`, `replaceSection`, `getSectionContent`) to handle errors robustly. Specifically, throw descriptive errors if the file does not exist or if the specified section markers are not found in the file.",
+            "status": "pending",
+            "testStrategy": "Test `getSectionContent` to ensure it extracts the correct content. Test all public functions by passing non-existent file paths and valid file paths with missing section markers to confirm they throw the expected, informative errors."
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Develop `replaceSection` MCP Tool",
+        "description": "Implement the tool to replace an existing section in a landing page with a different design variation.",
+        "details": "Register a tool named `replaceSection`. It will take a project path and section IDs (e.g., replace `gallery-1` with `gallery-4`). The handler will use the marker-based injection logic to replace the corresponding blocks in `index.html`, `style.css`, and `script.js`.",
+        "testStrategy": "Create a landing page using the `createLandingPage` tool. Then, call `replaceSection` and verify that the content of the specified section is updated in all relevant files without affecting other sections.",
+        "priority": "medium",
+        "dependencies": [
+          4,
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Register `replaceSection` Tool and Define Handler",
+            "description": "Create the tool's file, register `replaceSection` in the MCP's tool registry, and define the handler function signature to accept project path, old section ID, and new section ID.",
+            "dependencies": [],
+            "details": "Create a new file, e.g., `src/tools/replaceSection.js`. In the main MCP registry, map the command 'replaceSection' to the handler in this new file. The handler function should be defined as `async function replaceSectionHandler({ projectPath, oldSectionId, newSectionId })` and can start as a stub.",
+            "status": "pending",
+            "testStrategy": "Invoke the MCP with `replaceSection` and verify that the handler is called, possibly by checking for a console log message. Ensure it correctly parses the input arguments."
+          },
+          {
+            "id": 2,
+            "title": "Implement Logic to Fetch New Section Content",
+            "description": "Within the handler, implement the logic to read the HTML, CSS, and JS content for the `newSectionId` from the central Sections Repository.",
+            "dependencies": [
+              "6.1"
+            ],
+            "details": "Using the `newSectionId` (e.g., 'gallery-4'), construct the paths to the corresponding `.html`, `.css`, and `.js` files within the `/sections` directory. Read the contents of these files into variables. Implement error handling for cases where the section or its constituent files do not exist.",
+            "status": "pending",
+            "testStrategy": "Write a unit test for this part of the handler that provides a known `newSectionId` and asserts that the correct content is read from the repository files."
+          },
+          {
+            "id": 3,
+            "title": "Replace HTML Section Block",
+            "description": "Use the marker-based replacement utility (from Task 5) to replace the HTML block for the `oldSectionId` with the new HTML content in the project's `index.html` file.",
+            "dependencies": [
+              "6.2"
+            ],
+            "details": "Invoke the `replaceSection` utility function from the safe marker logic module. Pass it the path to the project's `index.html`, the `oldSectionId`, the `newSectionId`, and the new HTML content fetched in the previous subtask. The utility is expected to handle finding and replacing the content between `<!-- SECTION-START: oldSectionId -->` and `<!-- SECTION-END: oldSectionId -->` markers.",
+            "status": "pending",
+            "testStrategy": "Create a sample `index.html` with marked sections. Call this logic and verify that the target section is correctly replaced while other sections remain untouched."
+          },
+          {
+            "id": 4,
+            "title": "Replace CSS and JS Section Blocks",
+            "description": "Extend the replacement logic to also update the `style.css` and `script.js` files, replacing the old section's content with the new using the marker-based utility.",
+            "dependencies": [
+              "6.3"
+            ],
+            "details": "Call the same `replaceSection` utility function for `style.css` and `script.js`. The utility must correctly handle CSS (`/* SECTION-START: id */`) and JS (`// SECTION-START: id`) comment markers. Pass the new CSS and JS content fetched in subtask 2 to update the respective files.",
+            "status": "pending",
+            "testStrategy": "Create sample `style.css` and `script.js` files with marked sections. Run the logic and assert that the content and markers for the target section are correctly updated in both files."
+          },
+          {
+            "id": 5,
+            "title": "Implement and Run End-to-End Test",
+            "description": "Create a comprehensive test case that validates the entire `replaceSection` tool flow, from project creation to final verification, as outlined in the parent task's test strategy.",
+            "dependencies": [
+              "6.4"
+            ],
+            "details": "The test will first use the `createLandingPage` tool to generate a project with a known section (e.g., `gallery-1`). Then, it will call the `replaceSection` tool to replace `gallery-1` with `gallery-4`. Finally, it will read the modified `index.html`, `style.css`, and `script.js` to assert that the replacement was successful and that no other sections were affected.",
+            "status": "pending",
+            "testStrategy": "Execute the test script. Verify that it passes by checking the final state of the project files for the presence of the new section's content and the absence of the old section's content across all three target files."
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Develop `applyTheme` MCP Tool",
+        "description": "Implement a tool for applying theme customizations, primarily by updating CSS variables in the project's stylesheet.",
+        "details": "Register a tool named `applyTheme`. The handler will accept theme properties like primary color, font, etc. It will read `css/style.css` and replace predefined CSS variable values (e.g., `--primary-color: #...;`).",
+        "testStrategy": "Create a landing page. Call the `applyTheme` tool with new color values. Open the generated `index.html` in a browser and inspect the `style.css` to confirm the CSS variables have been updated.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Register `applyTheme` Tool and Define Handler Signature",
+            "description": "Create the basic scaffolding for the `applyTheme` tool by registering it with the Master Control Program (MCP) and defining its handler function with the expected arguments.",
+            "dependencies": [],
+            "details": "Create a new tool file, e.g., `tools/applyTheme.js`. Add the tool's definition to the MCP's tool registry. The handler function should be a stub that accepts a theme object containing properties like `primaryColor`, `fontFamily`, etc., and the `projectPath`.",
+            "status": "pending",
+            "testStrategy": "Run the MCP with a `--help` or similar command to verify that `applyTheme` is listed as an available tool."
+          },
+          {
+            "id": 2,
+            "title": "Implement CSS File Reading Logic",
+            "description": "Develop the functionality to locate and read the contents of the `style.css` file from the specified project directory.",
+            "dependencies": [
+              "7.1"
+            ],
+            "details": "Create a utility function within the tool's file that takes a project path, constructs the full path to `css/style.css`, and reads its entire content into a string. Implement error handling for cases where the file or directory does not exist.",
+            "status": "pending",
+            "testStrategy": "Write a unit test that calls this function with a path to a mock project structure and asserts that the content of a dummy `style.css` is returned correctly."
+          },
+          {
+            "id": 3,
+            "title": "Develop CSS Variable Replacement Logic",
+            "description": "Create a pure function that takes the CSS content as a string and a theme object, then returns a new string with the CSS variable values updated.",
+            "dependencies": [
+              "7.2"
+            ],
+            "details": "The function will use regular expressions to find and replace the values of predefined CSS variables (e.g., `--primary-color`, `--font-family`) within the `:root` selector block. It must be robust enough to handle different formatting and existing values without altering the rest of the file.",
+            "status": "pending",
+            "testStrategy": "Unit test this function with various sample CSS strings and theme objects. Test edge cases like missing variables in the input string and partial theme objects."
+          },
+          {
+            "id": 4,
+            "title": "Integrate Logic and Implement File Write Operation",
+            "description": "Combine the file reading and variable replacement logic into the main tool handler and implement the functionality to write the modified CSS content back to the file system.",
+            "dependencies": [
+              "7.3"
+            ],
+            "details": "Flesh out the `applyTheme` handler. It will call the file reader (Subtask 7.2), pass the content and theme arguments to the replacer function (Subtask 7.3), and then use Node.js `fs` module to overwrite the original `css/style.css` with the updated content.",
+            "status": "pending",
+            "testStrategy": "Create a temporary test directory with a `style.css` file. Run the integrated handler and assert that the file's content has been modified as expected."
+          },
+          {
+            "id": 5,
+            "title": "Create and Execute End-to-End Test",
+            "description": "Perform a full, end-to-end test of the `applyTheme` tool on a project generated by the `createLandingPage` tool to validate its real-world functionality.",
+            "dependencies": [
+              "7.4"
+            ],
+            "details": "As per the parent task's test strategy, first use the `createLandingPage` tool to generate a complete landing page project. Then, execute the `applyTheme` tool, targeting the newly created project with a new set of colors. Finally, inspect the resulting `css/style.css` to confirm the variables have been correctly updated.",
+            "status": "pending",
+            "testStrategy": "Automate the test process: a script should run `createLandingPage`, then `applyTheme`, and finally read the output `style.css` to check if the values match the theme passed to the tool."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Implement `SectionsList` Resource and Error Handling",
+        "description": "Expose a list of available sections as an MCP Resource and implement the fallback mechanism for handling requests for non-existent sections.",
+        "details": "Implement `server.registerResource` to expose a `sectionsList` that dynamically reads the `/sections` directory. Modify the core logic in tools to check if a section ID exists. If not, use a default (e.g., `hero-1`) and log an error.",
+        "testStrategy": "Query the `sectionsList` resource to confirm it returns an accurate list of available section IDs. Call `createLandingPage` with an invalid section ID and verify that the page is still created using a default section and an error is logged to the console.",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Develop Directory Scanning Utility for Sections",
+            "description": "Create a reusable utility function that scans the `/sections` directory and returns a comprehensive list of all available section IDs based on the subdirectory names.",
+            "dependencies": [],
+            "details": "Implement a function, e.g., `getAvailableSections()`, using the Node.js `fs` module. This function should read the contents of the `/sections` directory and return an array of strings, where each string is a valid section ID (e.g., 'hero-1', 'gallery-2'). It should handle cases where the directory might not exist or is empty.",
+            "status": "pending",
+            "testStrategy": "Write unit tests for the utility. Verify it correctly lists subdirectories from a mock filesystem. Test its behavior with an empty or non-existent `/sections` directory."
+          },
+          {
+            "id": 2,
+            "title": "Register `sectionsList` as a Dynamic MCP Resource",
+            "description": "Expose the list of available sections as a discoverable MCP resource named `sectionsList` on the server.",
+            "dependencies": [
+              "8.1"
+            ],
+            "details": "In the server's main entry point or a dedicated resource management file, use the `server.registerResource` method. The resource handler should call the `getAvailableSections()` utility (from subtask 8.1) to dynamically provide the list of section IDs whenever the resource is queried.",
+            "status": "pending",
+            "testStrategy": "After starting the server, use an MCP client or test script to query the `sectionsList` resource. Assert that the returned JSON array of strings matches the actual directory names within the `/sections` folder."
+          },
+          {
+            "id": 3,
+            "title": "Implement Section Existence Validation Logic",
+            "description": "Create a function to efficiently check if a given section ID is valid by cross-referencing it with the list of available sections.",
+            "dependencies": [
+              "8.1"
+            ],
+            "details": "Implement a function, e.g., `isSectionValid(sectionId)`. This function should leverage the `getAvailableSections()` utility (from subtask 8.1) to get the current list of valid sections and return `true` or `false` based on whether the provided `sectionId` is in the list.",
+            "status": "pending",
+            "testStrategy": "Unit test the validation function with known valid and invalid section IDs. Ensure it returns the correct boolean value in all cases."
+          },
+          {
+            "id": 4,
+            "title": "Integrate Validation and Fallback into `createLandingPage` Tool",
+            "description": "Modify the `createLandingPage` tool to use the validation logic and implement a fallback mechanism for any requested sections that do not exist.",
+            "dependencies": [
+              "8.3"
+            ],
+            "details": "In the handler for the `createLandingPage` tool, before processing the array of section IDs, iterate through it. For each ID, call `isSectionValid()`. If it returns `false`, replace that ID in the array with a hardcoded default section ID, such as `hero-1`.",
+            "status": "pending",
+            "testStrategy": "Call the `createLandingPage` tool with a mix of valid and invalid section IDs. Verify that the generated landing page uses the default section in place of the invalid one, by inspecting the final HTML file."
+          },
+          {
+            "id": 5,
+            "title": "Add Console Error Logging for Section Fallbacks",
+            "description": "Enhance the `createLandingPage` tool to provide clear feedback by logging an error message when a section fallback occurs.",
+            "dependencies": [
+              "8.4"
+            ],
+            "details": "Inside the `createLandingPage` tool's validation loop (from subtask 8.4), when an invalid section ID is detected, use `console.error` to log a descriptive message. The message should state which section ID was invalid and which default ID was used as a replacement.",
+            "status": "pending",
+            "testStrategy": "Execute a test that calls `createLandingPage` with an invalid section ID. Capture the console output and verify that a correctly formatted error message is logged for the invalid section."
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Define and Implement Zod Schemas for All Tools",
+        "description": "Define and integrate Zod schemas for the input and output of all MCP tools to ensure strict type safety and runtime validation.",
+        "details": "For each tool (`createLandingPage`, `replaceSection`, etc.), define `inputSchema` and `outputSchema` using `zod`. Integrate these schemas into the `server.registerTool` calls. Ensure handlers receive strongly-typed arguments.",
+        "testStrategy": "Attempt to call each tool with invalid input (e.g., wrong data type, missing properties). Verify that the MCP server rejects the request with a descriptive validation error from Zod.",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Install Zod and Establish Schema Definition Patterns",
+            "description": "Add the `zod` library to the project's dependencies and create a centralized module for housing all tool-related schemas to ensure consistency and reusability.",
+            "dependencies": [],
+            "details": "Execute `npm install zod` or the equivalent for the project's package manager. Create a new file, for example `src/lib/schemas.js`, to export all Zod schemas. This file will serve as the single source of truth for tool data structures.",
+            "status": "pending",
+            "testStrategy": "Verify that `zod` is listed in the `package.json` file. Ensure the new `schemas.js` file can be created and imported into other modules without errors."
+          },
+          {
+            "id": 2,
+            "title": "Define Input and Output Schemas for `createLandingPage`",
+            "description": "Define the `inputSchema` and `outputSchema` for the `createLandingPage` tool using Zod, based on the requirements outlined in Task 4.",
+            "dependencies": [
+              "9.1"
+            ],
+            "details": "In the central schema file, define an `inputSchema` for `createLandingPage` that validates `projectName` (string), `theme` (string), and `sectionIds` (array of strings). Define an `outputSchema` that validates a success object, e.g., `{ success: z.boolean(), projectPath: z.string() }`.",
+            "status": "pending",
+            "testStrategy": "Manually test the schemas by attempting to parse valid and invalid data objects using `schema.parse()` and `schema.safeParse()` to confirm they behave as expected."
+          },
+          {
+            "id": 3,
+            "title": "Define Input and Output Schemas for Other Core Tools",
+            "description": "Define the `inputSchema` and `outputSchema` for the `replaceSection` tool and any other currently defined or planned core tools.",
+            "dependencies": [
+              "9.1"
+            ],
+            "details": "In the central schema file, define schemas for the `replaceSection` tool. The input should likely include `projectPath` (string), `oldSectionId` (string), and `newSectionId` (string). The output could be a simple success boolean. Add placeholder schemas for any other anticipated tools.",
+            "status": "pending",
+            "testStrategy": "Manually test the new schemas by attempting to parse valid and invalid data objects to confirm they enforce the correct structure and types."
+          },
+          {
+            "id": 4,
+            "title": "Integrate Schema Validation into `McpServer.registerTool`",
+            "description": "Modify the `McpServer`'s `registerTool` method to accept the Zod schemas and perform automatic validation of tool inputs before executing the handler.",
+            "dependencies": [
+              "9.2"
+            ],
+            "details": "Update the `registerTool` method signature to accept an object containing the handler, `inputSchema`, and `outputSchema`. Within the server's internal tool invocation logic, wrap the handler call in a try/catch block. Use `inputSchema.parse(data)` to validate incoming arguments. If parsing fails, catch the Zod error and return a standardized validation error response to the client.",
+            "status": "pending",
+            "testStrategy": "Write a unit test for the `McpServer` that registers a mock tool with a schema. Attempt to call the tool with invalid data and assert that the server catches the error and returns a specific validation error message, rather than executing the handler."
+          },
+          {
+            "id": 5,
+            "title": "Refactor Tool Handlers and Implement End-to-End Validation Tests",
+            "description": "Refactor all existing tool handlers to utilize the strongly-typed arguments provided by the new validation layer and implement the test strategy for runtime validation.",
+            "dependencies": [
+              "9.2",
+              "9.3",
+              "9.4"
+            ],
+            "details": "Update the `createLandingPage` and `replaceSection` tool handlers to remove any manual argument validation, as this is now handled by the server. The handler's arguments can be trusted to match the inferred Zod type. Implement the test strategy from the parent task by creating tests that call each tool with invalid inputs (missing properties, wrong types) and verify the server rejects the request with a descriptive Zod error.",
+            "status": "pending",
+            "testStrategy": "Execute end-to-end tests for each tool. For `createLandingPage`, call it without `projectName`. For `replaceSection`, call it with a number for `oldSectionId`. Verify in both cases that the server responds with a structured error message detailing the validation failure and that the tool's side effects (e.g., file creation) did not occur."
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "End-to-End Testing with a Mock Client",
+        "description": "Perform comprehensive end-to-end testing by simulating AI agent commands with a client script to ensure all tools work together as expected.",
+        "details": "Create a separate Node.js script using `@modelcontextprotocol/sdk` as a client. The script will connect to the server and execute a sequence of commands: create a page, replace a section, apply a new theme, and request the sections list. Assert the final state of the generated files.",
+        "testStrategy": "Run the client script against the running MCP server. The script should complete successfully. Manually inspect the final generated landing page files to confirm all operations were applied correctly and in the right order.",
+        "priority": "medium",
+        "dependencies": [
+          6,
+          7,
+          8
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Setup E2E Test Script Environment",
+            "description": "Create the directory and initial files for the Node.js mock client script. Install the `@modelcontextprotocol/sdk` dependency.",
+            "dependencies": [],
+            "details": "Create a new directory, e.g., `/e2e-test`. Inside, initialize a new Node.js project (`npm init -y`) and install the SDK (`npm install @modelcontextprotocol/sdk`). Create the main script file, e.g., `run-test.js`.",
+            "status": "pending",
+            "testStrategy": "Verify that `npm install` completes successfully and the `run-test.js` file is created. The script should be runnable with `node run-test.js` without errors, though it won't do anything yet."
+          },
+          {
+            "id": 2,
+            "title": "Implement Client Connection and Page Creation",
+            "description": "Write the initial part of the client script to connect to the running MCP server and execute the `createLandingPage` command.",
+            "dependencies": [
+              "10.1"
+            ],
+            "details": "In `run-test.js`, import `McpClient` and `StdioClientTransport`. Write the async function to instantiate the client, connect via stdio, and call `client.runTool('createLandingPage', { pageName: 'test-page' })`. The script should log the result of the tool call.",
+            "status": "pending",
+            "testStrategy": "Run the script against a running server. Verify that the script connects, executes the command, and that the initial landing page files are created in the project's output directory."
+          },
+          {
+            "id": 3,
+            "title": "Implement Section Replacement and Theme Application Commands",
+            "description": "Extend the script to execute the `replaceSection` and `applyTheme` commands in sequence after the page has been created.",
+            "dependencies": [
+              "10.2"
+            ],
+            "details": "Add two more `client.runTool` calls to the script. The first will call `replaceSection` with appropriate parameters (e.g., replacing an existing section with a new one). The second will call `applyTheme` with a specific theme name.",
+            "status": "pending",
+            "testStrategy": "Run the script. Manually inspect the generated files to see if the section content has been updated and if the new theme's CSS has been applied correctly."
+          },
+          {
+            "id": 4,
+            "title": "Implement Section List Query and Response Assertion",
+            "description": "Add the final command to the script to request the list of current sections and add an in-script assertion to validate the API response.",
+            "dependencies": [
+              "10.3"
+            ],
+            "details": "Add a `client.runTool` call for `getSections`. Use a Node.js assertion library (e.g., `assert`) to check if the returned list of sections reflects the changes made by the `replaceSection` command (e.g., the old section ID is gone, the new one is present).",
+            "status": "pending",
+            "testStrategy": "Run the script. Verify that the script completes without any assertion errors and logs the final list of sections correctly."
+          },
+          {
+            "id": 5,
+            "title": "Implement Filesystem Assertions and Finalize Script",
+            "description": "Finalize the E2E test by adding logic to read the generated output files (HTML, CSS) and assert their contents match the expected final state.",
+            "dependencies": [
+              "10.4"
+            ],
+            "details": "Use Node.js's `fs` module to read the generated landing page HTML and CSS files. Use string matching or regular expressions to assert that the HTML contains the content of the new section and that the CSS file contains rules from the applied theme. The script should exit with code 0 on success and non-zero on failure.",
+            "status": "pending",
+            "testStrategy": "Run the complete test script. It should pass successfully. Introduce a bug in one of the tools (e.g., make `applyTheme` fail silently) and re-run the test to ensure the filesystem assertion correctly catches the failure and exits with an error."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-27T12:34:40.865Z",
+      "updated": "2025-07-27T12:34:40.865Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

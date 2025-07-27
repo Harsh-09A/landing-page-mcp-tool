@@ -1,0 +1,43 @@
+# Task ID: 10
+# Title: End-to-End Testing with a Mock Client
+# Status: pending
+# Dependencies: 6, 7, 8
+# Priority: medium
+# Description: Perform comprehensive end-to-end testing by simulating AI agent commands with a client script to ensure all tools work together as expected.
+# Details:
+Create a separate Node.js script using `@modelcontextprotocol/sdk` as a client. The script will connect to the server and execute a sequence of commands: create a page, replace a section, apply a new theme, and request the sections list. Assert the final state of the generated files.
+
+# Test Strategy:
+Run the client script against the running MCP server. The script should complete successfully. Manually inspect the final generated landing page files to confirm all operations were applied correctly and in the right order.
+
+# Subtasks:
+## 1. Setup E2E Test Script Environment [pending]
+### Dependencies: None
+### Description: Create the directory and initial files for the Node.js mock client script. Install the `@modelcontextprotocol/sdk` dependency.
+### Details:
+Create a new directory, e.g., `/e2e-test`. Inside, initialize a new Node.js project (`npm init -y`) and install the SDK (`npm install @modelcontextprotocol/sdk`). Create the main script file, e.g., `run-test.js`.
+
+## 2. Implement Client Connection and Page Creation [pending]
+### Dependencies: 10.1
+### Description: Write the initial part of the client script to connect to the running MCP server and execute the `createLandingPage` command.
+### Details:
+In `run-test.js`, import `McpClient` and `StdioClientTransport`. Write the async function to instantiate the client, connect via stdio, and call `client.runTool('createLandingPage', { pageName: 'test-page' })`. The script should log the result of the tool call.
+
+## 3. Implement Section Replacement and Theme Application Commands [pending]
+### Dependencies: 10.2
+### Description: Extend the script to execute the `replaceSection` and `applyTheme` commands in sequence after the page has been created.
+### Details:
+Add two more `client.runTool` calls to the script. The first will call `replaceSection` with appropriate parameters (e.g., replacing an existing section with a new one). The second will call `applyTheme` with a specific theme name.
+
+## 4. Implement Section List Query and Response Assertion [pending]
+### Dependencies: 10.3
+### Description: Add the final command to the script to request the list of current sections and add an in-script assertion to validate the API response.
+### Details:
+Add a `client.runTool` call for `getSections`. Use a Node.js assertion library (e.g., `assert`) to check if the returned list of sections reflects the changes made by the `replaceSection` command (e.g., the old section ID is gone, the new one is present).
+
+## 5. Implement Filesystem Assertions and Finalize Script [pending]
+### Dependencies: 10.4
+### Description: Finalize the E2E test by adding logic to read the generated output files (HTML, CSS) and assert their contents match the expected final state.
+### Details:
+Use Node.js's `fs` module to read the generated landing page HTML and CSS files. Use string matching or regular expressions to assert that the HTML contains the content of the new section and that the CSS file contains rules from the applied theme. The script should exit with code 0 on success and non-zero on failure.
+

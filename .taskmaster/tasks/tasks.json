@@ -17,7 +17,7 @@
             "description": "Create the `package.json` file to define the project, its metadata, and manage its dependencies.",
             "dependencies": [],
             "details": "Run the command `npm init -y` in the root directory of the project to generate a default `package.json` file.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Verify that a `package.json` file is successfully created in the project's root directory."
           },
           {
@@ -28,7 +28,7 @@
               "1.1"
             ],
             "details": "Execute the command `npm install @modelcontextprotocol/sdk zod` in the terminal from the project root.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Confirm that the command completes without errors. Check for the creation of the `node_modules` folder and `package-lock.json` file. Verify that `@modelcontextprotocol/sdk` and `zod` are listed under `dependencies` in `package.json`."
           },
           {
@@ -680,7 +680,7 @@
     ],
     "metadata": {
       "created": "2025-07-27T12:34:40.865Z",
-      "updated": "2025-07-27T12:34:40.865Z",
+      "updated": "2025-07-27T13:03:27.313Z",
       "description": "Tasks for master context"
     }
   }
